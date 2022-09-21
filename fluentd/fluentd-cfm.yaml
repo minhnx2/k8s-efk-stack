@@ -5,5 +5,5 @@ metadata:
   labels:
     component: fluentd
 data:
-  elasticsearch_username: elastic
+  elasticsearch_username: logstash_system
   elasticsearch_password: ELASTIC_PASSWORD
