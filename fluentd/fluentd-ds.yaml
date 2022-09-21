@@ -27,6 +27,19 @@ spec:
             value: "http"
           - name: FLUENTD_SYSTEMD_CONF
             value: disable
+          - name: FLUENT_ELASTICSEARCH_USER
+            valueFrom:
+              configMapKeyRef:
+                name: fluentd-config
+                key: elasticsearch_username
+          - name: FLUENT_ELASTICSEARCH_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: fluentd-config
+                key: elasticsearch_password
+        envFrom:
+        - configMapRef:
+            name: fluentd-config
         resources:
           limits:
             memory: 512Mi

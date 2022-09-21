@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: elasticsearch
-        image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.17.6
         resources:
             limits:
               cpu: 1000m
@@ -29,6 +29,9 @@ spec:
           name: inter-node
           protocol: TCP
         volumeMounts:
+        - name: elasticsearch-config
+          mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
+          subPath: elasticsearch.yml
         - name: data
           mountPath: /usr/share/elasticsearch/data
         env:
@@ -43,7 +46,7 @@ spec:
           - name: cluster.initial_master_nodes
             value: "es-cluster-0,es-cluster-1,es-cluster-2"
           - name: ES_JAVA_OPTS
-            value: "-Xms512m -Xmx512m"
+            value: "-Xms512m -Xmx512m"          
       initContainers:
       - name: fix-permissions
         image: busybox
@@ -63,6 +66,10 @@ spec:
         command: ["sh", "-c", "ulimit -n 65536"]
         securityContext:
           privileged: true
+      volumes:
+      - name: elasticsearch-config
+        configMap:
+          name: elasticsearch-config
   volumeClaimTemplates:
   - metadata:
       name: data
@@ -73,4 +80,4 @@ spec:
       # storageClassName: ""
       resources:
         requests:
-          storage: 50Gi
+          storage: 50Gi  

@@ -23,7 +23,22 @@ spec:
           requests:
             cpu: 100m
         env:
-          - name: ELASTICSEARCH_URL
-            value: http://elasticsearch:9200
+        - name: ELASTICSEARCH_URL
+          value: http://elasticsearch:9200
+        - name: XPACK_SECURITY_ENABLED
+          value: "true"
+        - name: ELASTICSEARCH_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: kibana-config
+              key: elasticsearch_username
+        - name: ELASTICSEARCH_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: kibana-config
+              key: elasticsearch_password
+        envFrom:
+        - configMapRef:
+            name: kibana-config
         ports:
         - containerPort: 5601
